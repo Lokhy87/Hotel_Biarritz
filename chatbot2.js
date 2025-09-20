@@ -1,8 +1,55 @@
 // Temporadas
 let temporadas = [
-    {inicio: '01/09/2025', fin: '31/10/2025', MP: 39.40, PC: 39.90},
-    {inicio: '05/03/2025', fin: '31/05/2025', MP: 40.40, PC: 42.90}
+{
+    inicio: '01/10/2025',
+    fin: '15/10/2025',
+    MP: 34.30, 
+    PC: 39.30
+},
+{
+    inicio: '01/03/2026',
+    fin: '14/03/2026',
+    MP: 34.30, 
+    PC: 39.30
+},
+{ // Fallas
+    inicio: '15/03/2026',
+    fin: '19/03/2026',
+    MP: 46.10, 
+    PC: 51.10
+},
+{
+    inicio: '20/03/2026',
+    fin: '30/04/2026',
+    MP: 34.30, 
+    PC: 39.30
+},
+{
+    inicio: '01/05/2026',
+    fin: '31/05/2026',
+    MP: 34.90, 
+    PC: 39.90
+},
+{
+    inicio: '01/06/2026',
+    fin: '14/06/2026',
+    MP: 41.20, 
+    PC: 46.20
+},
+{
+    inicio: '15/06/2026',
+    fin: '30/06/2026',
+    MP: 46.10, 
+    PC: 51.10
+},
+{
+    inicio: '13/09/2026',
+    fin: '19/09/2026',
+    MP: 36.60, 
+    PC: 41.60
+}
 ];
+
 
 // Parsear fecha DD/MM/YYYY a Date
 function parseFechas(fechaStr) {
@@ -17,10 +64,14 @@ function detectarFechas(mensaje) {
     let meses = {enero:"01", febrero:"02", marzo:"03", abril:"04", mayo:"05", junio:"06", julio:"07", agosto:"08", septiembre:"09", octubre:"10", noviembre:"11", diciembre:"12"};
     let fecha_entrada = '', fecha_salida = '';
     if (m) {
-        let año = new Date().getFullYear();
-        let mes_num = meses[m[3].toLowerCase()];
-        fecha_entrada = `${m[1].padStart(2,'0')}/${mes_num}/${año}`;
-        fecha_salida = `${m[2].padStart(2,'0')}/${mes_num}/${año}`;
+        let año_actual = new Date().getFullYear();
+        let mes_num = parseInt(meses[m[3].toLowerCase()]);
+        
+        // Si el mes ya pasó este año, asumimos que es del año siguiente
+        let año = (mes_num < (new Date().getMonth()+1)) ? año_actual+1 : año_actual;
+
+        fecha_entrada = `${m[1].padStart(2,'0')}/${String(mes_num).padStart(2,'0')}/${año}`;
+        fecha_salida = `${m[2].padStart(2,'0')}/${String(mes_num).padStart(2,'0')}/${año}`;
     }
     return {fecha_entrada, fecha_salida};
 }
@@ -37,6 +88,7 @@ function detectarRegimen(mensaje) {
 
 // Obtener tarifa diaria
 function obtenerTarifa(fecha, regimen) {
+    if (!regimen) return 0; // evita quedarse en 0 si no detecta el régimen
     let date = parseFechas(fecha);
     for (let temp of temporadas) {
         let inicio = parseFechas(temp.inicio);
@@ -53,7 +105,9 @@ function calcularPrecioTotal(fecha_entrada, fecha_salida, regimen) {
     let total = 0;
     for (let d = new Date(entrada); d < salida; d.setDate(d.getDate() + 1)) {
         let fechaStr = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
-        total += obtenerTarifa(fechaStr, regimen);
+        let tarifa = obtenerTarifa(fechaStr, regimen);
+        console.log(fechaStr, regimen, tarifa);
+        total += tarifa;
     }
     return total;
 }

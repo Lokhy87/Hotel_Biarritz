@@ -1,7 +1,7 @@
 // CHATBOT HOTEL 
 
 // Variables 
-let mensaje_entrada = 'Somos 50 personas del 20 al 21 de marzo, seria para alojarse en media pension';
+let mensaje_entrada = 'Somos 20 personas del 15/03/2026 al 19/03/2026, seria para alojarse en media pension';
 
 let detect_personas = mensaje_entrada.match(/\d+/);
 let num_personas;
@@ -17,18 +17,56 @@ let m = mensaje_entrada.match(re);
 let meses = {enero: "01", febrero: "02", marzo: "03", abril: "04", mayo: "05", junio: "06", julio: "07", agosto: "08", septiembre: "09", octubre: "10", noviembre: "11", diciembre: "12"};
 let regimen = '';
 let texto = mensaje_entrada.toUpperCase();
-let temporadas = [{
-    inicio: '01/09/2025',
-    fin: '31/10/2025',
-    MP: 39.40, 
+let temporadas = [
+{
+    inicio: '01/10/2025',
+    fin: '15/10/2025',
+    MP: 34.30, 
+    PC: 39.30
+},
+{
+    inicio: '01/03/2026',
+    fin: '14/03/2026',
+    MP: 34.30, 
+    PC: 39.30
+},
+{ // Fallas
+    inicio: '15/03/2026',
+    fin: '19/03/2026',
+    MP: 46.10, 
+    PC: 51.10
+},
+{
+    inicio: '20/03/2026',
+    fin: '30/04/2026',
+    MP: 34.30, 
+    PC: 39.30
+},
+{
+    inicio: '01/05/2026',
+    fin: '31/05/2026',
+    MP: 34.90, 
     PC: 39.90
 },
 {
-    inicio: '05/03/2025',
-    fin: '31/05/2025',
-    MP: 40.40, 
-    PC: 42.90
-}];
+    inicio: '01/06/2026',
+    fin: '14/06/2026',
+    MP: 41.20, 
+    PC: 46.20
+},
+{
+    inicio: '15/06/2026',
+    fin: '30/06/2026',
+    MP: 46.10, 
+    PC: 51.10
+},
+{
+    inicio: '13/09/2026',
+    fin: '19/09/2026',
+    MP: 36.60, 
+    PC: 41.60
+}
+];
 
 // Deteccion Nº personas
 if (detect_personas) {
